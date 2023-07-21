@@ -23,4 +23,8 @@ contract SecondVehicleNft is ERC721URIStorage {
         _tokenIds.increment();
         return newItemId;
     }
+
+    function getTokenIds() public view returns (uint256) {
+        return _tokenIds.current();
+    }
 }
