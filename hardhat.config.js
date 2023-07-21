@@ -28,7 +28,7 @@ module.exports = {
       blockConfirmations: 6,
     },
   },
-  solidity: "0.8.18",
+  solidity: "0.8.19",
   namedAccounts: {
     deployer: {
       default: 0,
