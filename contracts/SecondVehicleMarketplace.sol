@@ -21,38 +21,44 @@ contract SecondVehicleMarketplace is ReentrancyGuard {
 
     // emit an event when a vehicle is posted
     event VehiclePosted(
-        address indexed seller,
         address indexed nftAddress,
-        uint256 indexed tokenId
+        address indexed sellerAddress,
+        uint256 indexed sellerTokenId
     );
 
     // emit an event when the vehicle posting is cancelled
     event VehicleCancelled(
-        address indexed seller,
         address indexed nftAddress,
-        uint256 indexed tokenId
+        address indexed sellerAddress,
+        uint256 indexed sellerTokenId
     );
 
     // emit an event when a user tries to bid
     event VehicleBid(
         address indexed nftAddress,
-        uint256 indexed sellerTokenId,
-        uint256 indexed buyerTokenId
+        address indexed sellerAddress,
+        address indexed buyerAddress,
+        uint256 sellerTokenId,
+        uint256 buyerTokenId
     );
 
     // emit an event when a barter finished, when a barter is done, all the bids assolicated with the two cars and ads should be cancelled.
     //  vehicle post should also be cancelled
     event VehicleBartered(
         address indexed nftAddress,
-        uint256 indexed sellerTokenId,
-        uint256 indexed buyerTokenId
+        address indexed sellerAddress,
+        address indexed buyerAddress,
+        uint256 sellerTokenId,
+        uint256 buyerTokenId
     );
 
     // emit an event when a bid is canclled, vehicle post should also be cancelled
     event VehicleBidCancelled(
         address indexed nftAddress,
-        uint256 indexed sellerTokenId,
-        uint256 indexed buyerTokenId
+        address indexed sellerAddress,
+        address indexed buyerAddress,
+        uint256 sellerTokenId,
+        uint256 buyerTokenId
     );
 
     mapping(address => mapping(uint256 => address)) private s_postings; // nftAddress => mapping(tokenId => ownerAddress)
@@ -88,7 +94,7 @@ contract SecondVehicleMarketplace is ReentrancyGuard {
         emit VehicleCancelled(msg.sender, nftAddress, tokenId);
     }
 
-    // bid for a vehicle
+    // bid for a vehicle, it is necessary because the costs can keep the fake buyer away
     function bidForVehicle(
         address nftAddress,
         uint256 sellerTokenId,
@@ -98,7 +104,14 @@ contract SecondVehicleMarketplace is ReentrancyGuard {
         isPosted(nftAddress, sellerTokenId)
         isOwner(nftAddress, buyerTokenId, msg.sender)
     {
-        emit VehicleBid(nftAddress, sellerTokenId, buyerTokenId);
+        address sellerAddress = s_postings[nftAddress][sellerTokenId];
+        emit VehicleBid(
+            nftAddress,
+            sellerAddress,
+            msg.sender,
+            sellerTokenId,
+            buyerTokenId
+        );
     }
 
     // barter a vehicel, TODO what conditions should be required for a acceptable bartering?
@@ -108,23 +121,29 @@ contract SecondVehicleMarketplace is ReentrancyGuard {
         uint256 buyerTokenId
     ) external isOwner(nftAddress, sellerTokenId, msg.sender) nonReentrant {
         // barter the two nfts
-        address sellerAddress = s_postings[nftAddress][sellerTokenId];
+        address buyerAddress = IERC721(nftAddress).ownerOf(buyerTokenId); // TODO optimize for the gas fee
 
         // TODO is it atomic?
         IERC721(nftAddress).safeTransferFrom(
-            sellerAddress,
             msg.sender,
+            buyerAddress,
             sellerTokenId
         );
         IERC721(nftAddress).safeTransferFrom(
+            buyerAddress,
             msg.sender,
-            sellerAddress,
             buyerTokenId
         );
-        emit VehicleBartered(nftAddress, sellerTokenId, buyerTokenId);
+        emit VehicleBartered(
+            nftAddress,
+            msg.sender,
+            buyerAddress,
+            sellerTokenId,
+            buyerTokenId
+        );
     }
 
-    // seller or buyer can cancel the barter.
+    // seller or buyer can cancel the barter. is it necessary, it costs gas fee
     function cancelBarter(
         address nftAddress,
         uint256 sellerTokenId,
@@ -138,7 +157,14 @@ contract SecondVehicleMarketplace is ReentrancyGuard {
             msg.sender
         )
     {
-        emit VehicleBidCancelled(nftAddress, sellerTokenId, buyerTokenId);
+        address buyerAddress = IERC721(nftAddress).ownerOf(buyerTokenId);
+        emit VehicleBidCancelled(
+            nftAddress,
+            msg.sender,
+            buyerAddress,
+            sellerTokenId,
+            buyerTokenId
+        );
     }
 
     // modifier
