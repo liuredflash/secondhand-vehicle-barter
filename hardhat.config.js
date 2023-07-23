@@ -2,7 +2,7 @@
 // require("@nomiclabs/hardhat-etherscan")
 // require("hardhat-deploy")
 // require("solidity-coverage")
-// require("hardhat-gas-reporter")
+require("hardhat-gas-reporter")
 // require("hardhat-contract-sizer")
 // require("@nomiclabs/hardhat-ethers");
 require("@nomicfoundation/hardhat-toolbox");
@@ -22,7 +22,8 @@ const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY
 module.exports = {
   defaultNetwork: "hardhat",
   networks: {
-    hardhat: {
+    localhost: {
+      url: "http://127.0.0.1:8545/",
       chainId: 31337,
       blockConfirmations: 1,
     },
@@ -33,6 +34,11 @@ module.exports = {
       blockConfirmations: 6,
     },
   },
+  etherscan: {
+    apiKey: {
+      sepolia: ETHERSCAN_API_KEY,
+    }
+  },
   solidity: "0.8.19",
   namedAccounts: {
     deployer: {
@@ -41,5 +47,8 @@ module.exports = {
     player: {
       default: 1,
     },
+  },
+  gasReporter: {
+    enabled: true,
   },
 };
