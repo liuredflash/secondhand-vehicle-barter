@@ -2,11 +2,11 @@ const hre = require("hardhat")
 const { network } = require("hardhat");
 const { verify } = require("../utils/verify");
 async function main() {
-    console.log("deploy SecondVehicleMarketplace........")
-    const marketplace = await hre.ethers.deployContract("SecondVehicleMarketplace")
+    console.log("deploy SecondHandVehicleMarketplace........")
+    const marketplace = await hre.ethers.deployContract("SecondHandVehicleMarketplace")
     const contract = await marketplace.waitForDeployment();
     console.log(await contract.getAddress())
-    console.log("SecondVehicleMarketplace deployed!")
+    console.log("SecondHandVehicleMarketplace deployed!")
 
     if (network.config.chainId == 11155111 && process.env.ETHERSCAN_API_KEY) {
         console.log("waiting for block confirmations....")

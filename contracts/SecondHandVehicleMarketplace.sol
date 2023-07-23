@@ -12,7 +12,7 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 //     3. bid for vehicles.  one can bid for many vehicles, but it costs gas fee
 //     4. barter vehicles.
 
-contract SecondVehicleMarketplace is ReentrancyGuard {
+contract SecondHandVehicleMarketplace is ReentrancyGuard {
     error NotOwner();
     error NotPosted();
     error IsPosted();

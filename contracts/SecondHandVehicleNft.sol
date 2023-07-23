@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 
 // the info of vehicles can be updated
 
-contract SecondVehicleNft is ERC721URIStorage {
+contract SecondHandVehicle is ERC721URIStorage {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
 
