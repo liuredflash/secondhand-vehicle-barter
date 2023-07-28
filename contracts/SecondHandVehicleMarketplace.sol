@@ -78,7 +78,7 @@ contract SecondHandVehicleMarketplace is ReentrancyGuard {
             revert NotApprovedForMarketplace();
         }
         s_postings[nftAddress][tokenId] = msg.sender;
-        emit VehiclePosted(msg.sender, nftAddress, tokenId);
+        emit VehiclePosted(nftAddress, msg.sender, tokenId);
     }
 
     //  cancle a posted vehicle, pop the tokenId from s_postings, and emit a Vehiclecanclled event.
@@ -91,7 +91,7 @@ contract SecondHandVehicleMarketplace is ReentrancyGuard {
         isPosted(nftAddress, tokenId)
     {
         delete s_postings[nftAddress][tokenId];
-        emit VehicleCancelled(msg.sender, nftAddress, tokenId);
+        emit VehicleCancelled(nftAddress, msg.sender, tokenId);
     }
 
     // bid for a vehicle, it is necessary because the costs can keep the fake buyer away

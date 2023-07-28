@@ -14,7 +14,9 @@ require("dotenv").config()
 
 
 const SEPOLIA_RPC_URL = process.env.SEPOLIA_RPC_URL
-const PRIVATE_KEY = process.env.PRIVATE_KEY
+const PRIVATE_KEY_FOR_CONTRACT_ACCOUNT2 = process.env.PRIVATE_KEY_FOR_CONTRACT_ACCOUNT2
+const PRIVATE_KEY_ACCOUNT1 = process.env.PRIVATE_KEY_ACCOUNT1
+const PRIVATE_KEY_ACCOUNT3 = process.env.PRIVATE_KEY_ACCOUNT3
 const COINMARKETCAP_API_KEY = process.env.COINMARKETCAP_API_KEY
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY
 
@@ -29,7 +31,7 @@ module.exports = {
     },
     sepolia: {
       url: SEPOLIA_RPC_URL,
-      accounts: [PRIVATE_KEY],
+      accounts: [PRIVATE_KEY_FOR_CONTRACT_ACCOUNT2, PRIVATE_KEY_ACCOUNT1, PRIVATE_KEY_ACCOUNT3],
       chainId: 11155111,
       blockConfirmations: 6,
     },
