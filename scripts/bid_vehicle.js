@@ -2,7 +2,7 @@ const { ethers, getNamedAccounts } = require("hardhat")
 
 async function bid() {
     const _vehicleMarketplace = await ethers.getContractFactory("SecondHandVehicleMarketplace")
-    const _vehicleNft = await ethers.getContractFactory("SecondHandVehicle")
+    const _vehicleNft = await ethers.getContractFactory("SecondHandVehicleNft")
     const vehicleMarketplace = _vehicleMarketplace.attach("0xcc8934C1a128e1a3e7059282a1A2744093d00892")
     const vehicleNft = _vehicleNft.attach("0x106B5793BA6CDab998f848796a6D1B6035A87b72")
 

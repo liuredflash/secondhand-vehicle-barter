@@ -3,7 +3,7 @@ const { network } = require("hardhat");
 const { verify } = require("../utils/verify");
 async function main() {
     console.log("deploy Second-hand Vehicle NFT........")
-    const vehicleNft = await hre.ethers.deployContract("SecondHandVehicle")
+    const vehicleNft = await hre.ethers.deployContract("SecondHandVehicleNft")
     const nftContract = await vehicleNft.waitForDeployment();
     console.log(await nftContract.getAddress())
     console.log("Second-hand Vehicle NFT deployed!")
