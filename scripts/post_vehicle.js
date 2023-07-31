@@ -3,16 +3,20 @@ const { ethers, getNamedAccounts } = require("hardhat")
 async function post() {
     const _vehicleMarketplace = await ethers.getContractFactory("SecondHandVehicleMarketplace")
     const _vehicleNft = await ethers.getContractFactory("SecondHandVehicleNft")
-    const vehicleMarketplace = _vehicleMarketplace.attach("0xcc8934C1a128e1a3e7059282a1A2744093d00892")
-    const vehicleNft = _vehicleNft.attach("0x106B5793BA6CDab998f848796a6D1B6035A87b72")
+    const vehicleMarketplace = _vehicleMarketplace.attach("0xd5a63fd5556D6Df1257f632e2DB13eF02c26C299")
+    const vehicleNft = _vehicleNft.attach("0x22A0A13382Ca7F00ae39b2deA735A3061cE287a3")
 
     const singers = await ethers.getSigners()
     // const deployer = singers[0] account 2 in metamask
-    const player = singers[1] // seller index1  buyer index2
+    const seller = singers[1] // seller index1  buyer index2
 
-    const tokenId = 0 // get event from logs
+    const tokenId = 1 // get event from logs
     console.log(`tokenId .....${tokenId}`)
-    const tx = await vehicleMarketplace.connect(player).postVehicle(vehicleNft.target, tokenId)
+    const recepit = await vehicleNft.connect(seller).approve(vehicleMarketplace.target, tokenId)
+    await recepit.wait(3) // wait for a certain number of confirmation until the block is mined.
+    console.log(recepit)
+    const tx = await vehicleMarketplace.connect(seller).postVehicle(vehicleNft.target, tokenId)
+    console.log(tx)
     await tx.wait(1)
     console.log("NFT posted!")
 }

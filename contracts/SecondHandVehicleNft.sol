@@ -11,15 +11,28 @@ contract SecondHandVehicleNft is ERC721URIStorage, ERC721Enumerable {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
 
+    mapping(uint256 => address) private s_updators;
+
     constructor() ERC721("Second_Vehicle", "SV") {}
 
-    function mintSVNft(string memory uri) public returns (uint256) {
+    function mintSVNft(
+        address tokenOwner,
+        string memory uri
+    ) public returns (uint256) {
         uint256 newItemId = _tokenIds.current();
-        _mint(msg.sender, newItemId);
+        _mint(tokenOwner, newItemId);
         _setTokenURI(newItemId, uri);
 
         _tokenIds.increment();
         return newItemId;
+    }
+
+    function approveUpdator(address updator, uint256 tokenId) public {
+        require(
+            ownerOf(tokenId) == msg.sender,
+            "only owner can approve updator"
+        );
+        s_updators[tokenId] = updator;
     }
 
     function updateTokenURI(
@@ -31,7 +44,7 @@ contract SecondHandVehicleNft is ERC721URIStorage, ERC721Enumerable {
             "owner can not udpate tokenURI"
         );
         require(
-            getApproved(tokenId) == msg.sender,
+            s_updators[tokenId] == msg.sender,
             "only approved address can update tokenURI"
         );
         _setTokenURI(tokenId, uri);

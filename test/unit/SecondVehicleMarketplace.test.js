@@ -16,8 +16,8 @@ describe("SecondHandVehicleMarketplace unit test", function () {
         await secondHandVehicleMarketplace.waitForDeployment();
         await secondHandVehicle.waitForDeployment();
 
-        await secondHandVehicle.connect(seller).mintSVNft("seller_uri");
-        await secondHandVehicle.connect(buyer).mintSVNft("buyer_uri");
+        await secondHandVehicle.mintSVNft(seller, "seller_uri");
+        await secondHandVehicle.mintSVNft(buyer, "buyer_uri");
         await secondHandVehicle.connect(seller).approve(secondHandVehicleMarketplace.target, SELLER_TOKEN_ID)
         await secondHandVehicle.connect(buyer).approve(secondHandVehicleMarketplace.target, BUYER_TOKEN_ID)
         // Fixtures can return anything you consider useful for your tests

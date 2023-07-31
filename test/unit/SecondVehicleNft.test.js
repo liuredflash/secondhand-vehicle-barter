@@ -7,7 +7,7 @@ describe("SecondHandVehicle unit test", function () {
     async function deployTokenFixture() {
         const [owner, addr1] = await ethers.getSigners();
         const secondHandVehicle = await ethers.deployContract("SecondHandVehicleNft");
-        const txResponse = await secondHandVehicle.connect(addr1).mintSVNft("test_uri");
+        const txResponse = await secondHandVehicle.mintSVNft(addr1, "test_uri");
         await txResponse.wait(1)
 
         // Fixtures can return anything you consider useful for your tests
@@ -48,10 +48,10 @@ describe("SecondHandVehicle unit test", function () {
     // Private Key: 0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d
     describe("updateTokenURI", () => {
         it("allows approved address to update the tokenURI", async () => {
-            const { secondHandVehicle, owner, addr1 } = await loadFixture(deployTokenFixture);
+            const { secondHandVehicle, owner: updator, addr1 } = await loadFixture(deployTokenFixture);
             const before_uri = await secondHandVehicle.tokenURI(0)
-            await secondHandVehicle.connect(addr1).approve(owner, 0)
-            const updateTokenId = await secondHandVehicle.connect(owner).updateTokenURI(0, "update_uri")
+            await secondHandVehicle.connect(addr1).approveUpdator(updator, 0)
+            const updateTokenId = await secondHandVehicle.connect(updator).updateTokenURI(0, "update_uri")
             const after_uri = await secondHandVehicle.tokenURI(0)
 
             assert.equal(before_uri, "test_uri")
