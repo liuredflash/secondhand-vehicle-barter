@@ -112,4 +112,23 @@ describe("SecondHandVehicleMarketplace unit test", function () {
                 .to.revertedWithCustomError(secondHandVehicleMarketplace, "NotOwner")
         })
     })
+    describe("cancelBarter", async () => {
+        it("emit a VehicleBidCancelled event when cancel successfully", async () => {
+            const { secondHandVehicleMarketplace, secondHandVehicle, seller, buyer } = await loadFixture(deployTokenFixture)
+            await secondHandVehicleMarketplace.connect(seller).postVehicle(secondHandVehicle.target, SELLER_TOKEN_ID)
+            await secondHandVehicleMarketplace.connect(buyer).bidForVehicle(secondHandVehicle.target, SELLER_TOKEN_ID, BUYER_TOKEN_ID)
+            await expect(secondHandVehicleMarketplace.connect(seller).cancelBarter(secondHandVehicle.target, SELLER_TOKEN_ID, BUYER_TOKEN_ID))
+                .to.emit(secondHandVehicleMarketplace, "VehicleBidCancelled")
+
+            assert.equal(await secondHandVehicle.ownerOf(BUYER_TOKEN_ID), buyer.address)
+            assert.equal(await secondHandVehicle.ownerOf(SELLER_TOKEN_ID), seller.address)
+        })
+        it("not granted", async () => {
+            const { secondHandVehicleMarketplace, secondHandVehicle, owner, seller, buyer } = await loadFixture(deployTokenFixture)
+            await secondHandVehicleMarketplace.connect(seller).postVehicle(secondHandVehicle.target, SELLER_TOKEN_ID)
+            await secondHandVehicleMarketplace.connect(buyer).bidForVehicle(secondHandVehicle.target, SELLER_TOKEN_ID, BUYER_TOKEN_ID)
+            await expect(secondHandVehicleMarketplace.connect(owner).cancelBarter(secondHandVehicle.target, SELLER_TOKEN_ID, BUYER_TOKEN_ID))
+                .to.revertedWithCustomError(secondHandVehicleMarketplace, "NotGrantedToCancelBarter")
+        })
+    })
 })

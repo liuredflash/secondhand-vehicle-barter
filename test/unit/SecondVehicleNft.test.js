@@ -40,6 +40,15 @@ describe("SecondHandVehicle unit test", function () {
             assert.equal(balance, 1)
         })
     })
+    describe("approveUpdator", () => {
+        it("Only owner can approve a updater", async () => {
+            const { secondHandVehicle, owner: updator, addr1 } = await loadFixture(deployTokenFixture);
+            const before_uri = await secondHandVehicle.tokenURI(0)
+            await expect(secondHandVehicle.connect(updator).approveUpdator(updator, 0))
+                .to.revertedWithCustomError(secondHandVehicle, "NotOwner")
+        })
+    })
+
 
     //     Account #0: 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 (10000 ETH)
     // Private Key: 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
