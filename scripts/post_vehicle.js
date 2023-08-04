@@ -1,10 +1,11 @@
 const { ethers, getNamedAccounts } = require("hardhat")
+const { marketplaceAddress, nftAddress } = require("../helper-hardhat-config")
 
 async function post() {
     const _vehicleMarketplace = await ethers.getContractFactory("SecondHandVehicleMarketplace")
     const _vehicleNft = await ethers.getContractFactory("SecondHandVehicleNft")
-    const vehicleMarketplace = _vehicleMarketplace.attach("0xd5a63fd5556D6Df1257f632e2DB13eF02c26C299")
-    const vehicleNft = _vehicleNft.attach("0x22A0A13382Ca7F00ae39b2deA735A3061cE287a3")
+    const vehicleMarketplace = _vehicleMarketplace.attach(marketplaceAddress)
+    const vehicleNft = _vehicleNft.attach(nftAddress)
 
     const singers = await ethers.getSigners()
     // const deployer = singers[0] account 2 in metamask

@@ -10,13 +10,15 @@ async function mint() {
     const singers = await ethers.getSigners()
     // const deployer = singers[0] account 2 in metamask
     const buyer = singers[2] // seller index1  buyer index2
+    tokenId = 1
 
-    console.log("Minting NFT...")
-    const mintTx = await vehicleNft.mintSVNft(buyer, "test_token_uri")
-    const mintTxReceipt = await mintTx.wait(1)
-    const tokenId = mintTxReceipt.logs[0].args.tokenId // get event from logs
-    console.log(`tokenId .....${tokenId}`)
-    console.log("NFT minted!")
+    console.log("geting tokenURI...")
+    const tx = await vehicleNft.tokenURI(tokenId)
+    console.log(tx)
+    // const txTxReceipt = await mintTx.wait(1)
+    // const tokenId = mintTxReceipt.logs[0].args.tokenId // get event from logs
+    // console.log(`tokenId .....${tokenId}`)
+    // console.log("NFT minted!")
 }
 
 mint()

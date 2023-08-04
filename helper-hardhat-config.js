@@ -24,12 +24,16 @@ const networkConfig = {
 }
 
 const developmentChains = ["hardhat", "localhost"]
+const marketplaceAddress = "0x48480e3060cF7be6B183E3CB3a42251fDcB7735e"
+const nftAddress = "0x7D338F8602227afAC68104858f83C82A48296037"
 // const DECIMALS = 8
 // const INITIAL_ANSWER = 200000000000
 
 module.exports = {
     networkConfig,
     developmentChains,
+    marketplaceAddress,
+    nftAddress
     // DECIMALS,
     // INITIAL_ANSWER
 }
