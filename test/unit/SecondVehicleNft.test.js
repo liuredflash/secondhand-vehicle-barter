@@ -1,7 +1,7 @@
 const {
     loadFixture,
 } = require("@nomicfoundation/hardhat-toolbox/network-helpers");
-const { assert } = require("chai")
+const { assert, expect } = require("chai")
 
 describe("SecondHandVehicle unit test", function () {
     async function deployTokenFixture() {
@@ -57,6 +57,19 @@ describe("SecondHandVehicle unit test", function () {
             assert.equal(before_uri, "test_uri")
             assert.equal(updateTokenId.value, 0)
             assert.equal(after_uri, "update_uri")
+
+        })
+        it("owner can not update tokenURI", async () => {
+            const { secondHandVehicle, owner: updator, addr1 } = await loadFixture(deployTokenFixture);
+            const before_uri = await secondHandVehicle.tokenURI(0)
+            await expect(secondHandVehicle.connect(addr1).updateTokenURI(0, "update_uri"))
+                .to.revertedWithCustomError(secondHandVehicle, "NotApproved")
+        })
+        it("allows approved address to update the tokenURI", async () => {
+            const { secondHandVehicle, owner: updator, addr1 } = await loadFixture(deployTokenFixture);
+            const before_uri = await secondHandVehicle.tokenURI(0)
+            await expect(secondHandVehicle.connect(updator).updateTokenURI(0, "update_uri"))
+                .to.revertedWithCustomError(secondHandVehicle, "NotApproved")
 
         })
     })

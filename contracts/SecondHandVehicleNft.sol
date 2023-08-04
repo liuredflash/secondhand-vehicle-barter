@@ -8,6 +8,9 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 // the info of vehicles can be updated
 
 contract SecondHandVehicleNft is ERC721URIStorage, ERC721Enumerable {
+    error NotOwner();
+    error NotApproved();
+
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
 
@@ -28,10 +31,9 @@ contract SecondHandVehicleNft is ERC721URIStorage, ERC721Enumerable {
     }
 
     function approveUpdator(address updator, uint256 tokenId) public {
-        require(
-            ownerOf(tokenId) == msg.sender,
-            "only owner can approve updator"
-        );
+        if (ownerOf(tokenId) != msg.sender) {
+            revert NotOwner();
+        }
         s_updators[tokenId] = updator;
     }
 
@@ -39,14 +41,11 @@ contract SecondHandVehicleNft is ERC721URIStorage, ERC721Enumerable {
         uint256 tokenId,
         string memory uri
     ) public returns (uint256) {
-        require(
-            ownerOf(tokenId) != msg.sender,
-            "owner can not udpate tokenURI"
-        );
-        require(
-            s_updators[tokenId] == msg.sender,
-            "only approved address can update tokenURI"
-        );
+        if (
+            ownerOf(tokenId) == msg.sender || s_updators[tokenId] != msg.sender
+        ) {
+            revert NotApproved();
+        }
         _setTokenURI(tokenId, uri);
         return tokenId;
     }
