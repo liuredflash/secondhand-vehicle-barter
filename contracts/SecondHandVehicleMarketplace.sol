@@ -206,7 +206,8 @@ contract SecondHandVehicleMarketplace is ReentrancyGuard {
         address operator
     ) {
         IERC721 nft = IERC721(nftAddress);
-        address seller = nft.ownerOf(sellerTokenId);
+        // address seller = nft.ownerOf(sellerTokenId);
+        address seller = s_postings[nftAddress][sellerTokenId];
         address buyer = nft.ownerOf(buyerTokenId);
         if (!(operator == seller || operator == buyer)) {
             revert NotGrantedToCancelBarter();

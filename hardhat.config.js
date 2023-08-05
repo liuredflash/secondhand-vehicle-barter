@@ -41,7 +41,15 @@ module.exports = {
       sepolia: ETHERSCAN_API_KEY,
     }
   },
-  solidity: "0.8.19",
+  solidity: {
+    version: "0.8.19",
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 300,
+      },
+    },
+  },
   namedAccounts: {
     deployer: {
       default: 0,
@@ -52,5 +60,10 @@ module.exports = {
   },
   gasReporter: {
     enabled: true,
+    currency: "USD",
+    outputFile: "gas-report.txt",
+    noColors: true,
+    coinmarketcap: process.env.COINMARKETCAP_API_KEY,
+
   },
 };

@@ -20,7 +20,7 @@ contract SecondHandVehicleNft is ERC721URIStorage, ERC721Enumerable {
 
     function mintSVNft(
         address tokenOwner,
-        string memory uri
+        string calldata uri
     ) public returns (uint256) {
         uint256 newItemId = _tokenIds.current();
         _mint(tokenOwner, newItemId);
@@ -39,7 +39,7 @@ contract SecondHandVehicleNft is ERC721URIStorage, ERC721Enumerable {
 
     function updateTokenURI(
         uint256 tokenId,
-        string memory uri
+        string calldata uri
     ) public returns (uint256) {
         if (
             ownerOf(tokenId) == msg.sender || s_updators[tokenId] != msg.sender
@@ -50,7 +50,7 @@ contract SecondHandVehicleNft is ERC721URIStorage, ERC721Enumerable {
         return tokenId;
     }
 
-    function getTokenIds() public view returns (uint256) {
+    function getTokenIds() external view returns (uint256) {
         return _tokenIds.current();
     }
 

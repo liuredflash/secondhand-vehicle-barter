@@ -101,4 +101,5 @@ lint/tmp/
 
 gas-report.txt
 
-.learn
+.learn.txt
+gas-report*

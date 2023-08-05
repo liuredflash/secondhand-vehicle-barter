@@ -1,8 +1,10 @@
 1. gas optimization  https://www.youtube.com/watch?v=gyMwXuJrbJQ&t=98808s
+
     immutable and constant  // cost gas when deployed and called
     memory, storage, calldata
     use custome error but require()
     try to reduce the number of access of storage variables, create a memory variable instead, especially in a loop
+    https://www.alchemy.com/overviews/solidity-gas-optimization
 
 2. receive and fallback
     receive when no msg.data but with value
