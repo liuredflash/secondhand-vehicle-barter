@@ -134,6 +134,8 @@ contract SecondHandVehicleMarketplace is ReentrancyGuard {
             msg.sender,
             buyerTokenId
         );
+        delete s_postings[nftAddress][sellerTokenId];
+        delete s_postings[nftAddress][buyerTokenId];
         emit VehicleBartered(
             nftAddress,
             msg.sender,
