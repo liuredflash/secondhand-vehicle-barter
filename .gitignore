@@ -99,7 +99,5 @@ lint/outputs/
 lint/tmp/
 # lint/reports/
 
-gas-report.txt
-
 .learn.txt
 gas-report*
